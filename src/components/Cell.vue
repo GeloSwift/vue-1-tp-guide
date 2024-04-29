@@ -1,11 +1,25 @@
 <script setup lang="ts">
     import { Icon } from '@iconify/vue'
-    import { ref } from 'vue'
+    import { ref, watch } from 'vue'
 
-    const shape = ref('cross')
+    const emit = defineEmits<{
+        change : [shape : string]
+    }>()
+
+    const props = defineProps<{
+        shapeInit : string
+    }>()
+
+    watch(props, () => shape.value = props.shapeInit)
+
+    const shape = ref(props.shapeInit)
+
+    const SHAPES = ['circle', 'cross', 'empty']
 
     function switchShape() {
-        shape.value = (shape.value=='circle' ? 'cross' : 'circle')
+        const currentIndex = SHAPES.indexOf(shape.value)
+        shape.value = SHAPES[(currentIndex + 1) % SHAPES.length]
+        emit('change', shape.value)
     }
     
 
@@ -15,8 +29,8 @@
 <template>
     
     <div @click="switchShape" class="cell">
-        <Icon v-if="shape=='cross'" icon="radix-icons:cross-1" width="10em" />
-        <Icon v-else                icon="radix-icons:circle" width="10em" />
+        <Icon v-if="shape=='cross'"         icon="radix-icons:cross-1" width="10em" />
+        <Icon v-else-if="shape=='circle'"   icon="radix-icons:circle" width="10em" />
     </div>
 
 </template>
@@ -25,7 +39,9 @@
 <style>
 
     .cell {
-        border: dashed 1px pink;
+        border: dashed 5px rgb(0, 0, 0);
+        min-width: 11em;
+        min-height: 11em;
     }
 
 </style>
