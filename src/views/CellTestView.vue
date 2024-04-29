@@ -5,16 +5,13 @@
 
     const cellShape = ref('circle')
 
-    function update(shape:string){
-        cellShape.value = shape
-    }
     
 </script>
 
 <template>
     
     <h1>Page test d'un composant cellule</h1>
-    <Cell @change="update" :shape-init="cellShape"></Cell>
+    <Cell v-model:shape="cellShape"></Cell>
     <div> 
         Dans le parent la cellule contient : {{ cellShape }}
         <button @click="cellShape='circle'"  >Circle</button>

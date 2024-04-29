@@ -1,16 +1,27 @@
 <script setup lang="ts">
-
     import { Icon } from '@iconify/vue'
+    import { ref, watch } from 'vue'
 
-    const model = defineModel<string>('shape', {required:true})
+    const emit = defineEmits<{
+        change : [shape : string]
+    }>()
 
+    const props = defineProps<{
+        shapeInit : string
+    }>()
+
+    watch(props, () => shape.value = props.shapeInit)
+
+    const shape = ref(props.shapeInit)
 
     const SHAPES = ['circle', 'cross', 'empty']
 
     function switchShape() {
-        const currentIndex = SHAPES.indexOf(model.value)
-        model.value = SHAPES[(currentIndex + 1) % SHAPES.length]
+        const currentIndex = SHAPES.indexOf(shape.value)
+        shape.value = SHAPES[(currentIndex + 1) % SHAPES.length]
+        emit('change', shape.value)
     }
+    
 
 </script>
 
@@ -25,15 +36,12 @@
 </template>
 
 
-<style scoped>
+<style>
 
     .cell {
-        border: dotted 1px rgb(0, 0, 0);
+        border: dashed 5px rgb(0, 0, 0);
         min-width: 11em;
         min-height: 11em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
     }
 
 </style>

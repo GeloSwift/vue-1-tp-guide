@@ -21,6 +21,11 @@ const router = createRouter({
       path: '/cell-test',
       name: 'cell-test',
       component: () => import('../views/CellTestView.vue')
+    },
+    {
+      path: '/tic-tac-toe',
+      name: 'tic-tac-toe',
+      component: () => import('../views/TicTacToe.vue')
     }
   ]
 })
